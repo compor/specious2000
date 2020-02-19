@@ -11,7 +11,8 @@ if(NOT ${hasSrcDir})
   return()
 endif()
 
-set(BMK_LANG "C")
+set(BMK_LINKER_LANG "C")
+list(APPEND BMK_LANG "C")
 
 # set(SOURCES acceptt.c addimp.c alignfeed.c buildimp.c changrid.c clean.c
 # closepins.c config1.c configure.c configuref.c controlf.c countf.c date.c
@@ -34,14 +35,21 @@ file(
   ${HARNESS_BMK_SOURCE_SUBDIR}/*.c)
 
 if(CXXSOURCES)
-  set(BMK_LANG "CXX")
+  set(BMK_LINKER_LANG "CXX")
+  list(APPEND BMK_LANG "CXX")
 endif()
 
-list(APPEND SOURCES ${CSOURCES} ${CXXSOURCES})
-add_prefix(SOURCES "${HARNESS_BMK_SOURCE_SUBDIR}/" "${SOURCES}")
+message(STATUS "${BMK_NAME} linker language: ${BMK_LINKER_LANG}")
+message(STATUS "${BMK_NAME} source languages: ${BMK_LANG}")
 
-message(STATUS "${BMK_NAME} source language: ${BMK_LANG}")
-set_source_files_properties(${SOURCES} PROPERTIES LANGUAGE ${BMK_LANG})
+
+add_prefix(CSOURCES "${HARNESS_BMK_SOURCE_SUBDIR}/" "${CSOURCES}")
+add_prefix(CXXSOURCES "${HARNESS_BMK_SOURCE_SUBDIR}/" "${CXXSOURCES}")
+
+set_source_files_properties(${CSOURCES} PROPERTY LANGUAGE "C")
+set_source_files_properties(${CXXSOURCES} PROPERTY LANGUAGE "CXX")
+
+list(APPEND SOURCES ${CSOURCES} ${CXXSOURCES})
 
 add_executable(${BMK_PROJECT_NAME} ${SOURCES})
 
@@ -56,7 +64,7 @@ target_link_libraries(${BMK_PROJECT_NAME} m)
 
 # this property is required by our parasitic targets
 set_target_properties(
-  ${BMK_PROJECT_NAME} PROPERTIES LINKER_LANGUAGE ${BMK_LANG}
+  ${BMK_PROJECT_NAME} PROPERTIES LINKER_LANGUAGE ${BMK_LINKER_LANG}
                                  RUNTIME_OUTPUT_DIRECTORY exe)
 
 # this property is used internally by our harness because benchmark names and
