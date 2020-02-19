@@ -57,7 +57,7 @@ set(HARNESS_INSTALL_TREE_SCRIPTS_DIR
 
 set(HARNESS_CONFIG_DIR "${CMAKE_CURRENT_SOURCE_DIR}/config")
 
-add_definitions(-DSPEC_CPU)
+add_definitions(-DSPEC_CPU2000)
 
 # project options checks and processing
 
