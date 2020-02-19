@@ -55,8 +55,9 @@ target_include_directories(
 target_link_libraries(${BMK_PROJECT_NAME} m)
 
 # this property is required by our parasitic targets
-set_target_properties(${BMK_PROJECT_NAME} PROPERTIES LINKER_LANGUAGE
-                                                     ${BMK_LANG})
+set_target_properties(
+  ${BMK_PROJECT_NAME} PROPERTIES LINKER_LANGUAGE ${BMK_LANG}
+                                 RUNTIME_OUTPUT_DIRECTORY exe)
 
 # this property is used internally by our harness because benchmark names and
 # their main targets have different names
